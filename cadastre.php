@@ -1,8 +1,5 @@
 <?php
 session_start();
-include_once 'config.php';
-$sql = "SELECT * FROM contato";
-$resultado = mysqli_query($conexao, $sql);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -24,23 +21,24 @@ $resultado = mysqli_query($conexao, $sql);
                         <img src="https://getbootstrap.com/docs/5.0/assets/brand/bootstrap-logo.svg" alt="logo" width="100">
                     </div>
                     <?php
-            if (isset($_SESSION['msg']) and $_SESSION['msg'] != "" and isset($_SESSION['status']) and $_SESSION['status'] != "") {
+                    if (isset($_SESSION['msg']) and $_SESSION['msg'] != "" and isset($_SESSION['status']) and $_SESSION['status'] != "") {
 
-            ?>
-                <div class="alert <?php echo $_SESSION['status'] ?> alert-dismissible fade show" role="alert">
-                    <strong><?php echo $_SESSION['msg'] ?></strong>
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>
-            <?php  }
-            unset($_SESSION['msg']);
-            unset($_SESSION['status']);
-            ?>
+                    ?>
+                        <div class="alert <?php echo $_SESSION['status'] ?> alert-dismissible fade show" role="alert">
+                            <strong><?php echo $_SESSION['msg'] ?></strong>
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    <?php  }
+                    unset($_SESSION['msg']);
+                    unset($_SESSION['status']);
+                    ?>
                     <div class="card shadow-lg">
                         <div class="card-body p-5">
-                            <h1 class="fs-4 card-title fw-bold mb-4"> Fazer Login</h1>
-                            <form method="POST" action="login.php" autocomplete="off">
+                            <h1 class="fs-4 card-title fw-bold mb-4"> Fazer cadastro</h1>
+                            <form method="POST" action="insere.php" autocomplete="off">
                                 <div class="mb-3">
-                                    <label class="mb-2 text-muted" for="email">Nome de usuário</label>
+                                    <input type="hidden" name="id">
+                                     <label class="mb-2 text-muted" for="email">Nome de usuário</label>
                                     <input id="email" type="text" class="form-control" name="nome" required autofocus>
                                 </div>
                                 <div class="mb-3">
@@ -51,16 +49,11 @@ $resultado = mysqli_query($conexao, $sql);
                                 </div>
 
                                 <div class="d-flex align-items-center">
-                                    <button type="submit" class="btn btn-primary ms-auto">
-                                        Entrar
+                                    <button name="cadastrar-usuario" type="submit" class="btn btn-primary ms-auto">
+                                        Cadastrar-se
                                     </button>
                                 </div>
                             </form>
-                        </div>
-                        <div class="card-footer py-3 border-0">
-                            <div class="text-center">
-                                Não tem conta? <a href="cadastre.php" class="text-dark">Crie uma</a>
-                            </div>
                         </div>
                     </div>
                     <div class="text-center mt-5 text-muted">

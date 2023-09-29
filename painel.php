@@ -35,16 +35,31 @@ $resultado = mysqli_query($conexao, $sql);
                         <a class="nav-link active" aria-current="page" href="#">Painel</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Perfil</a>
+                        <a class="nav-link" href="perfil.php?id=<?php  echo $_SESSION['id']?>">Perfil</a>
                     </li>
                     <li class="nav-item">
                         <a class=" text-danger nav-link" href="sair.php">Sair</a>
                     </li>
+                    
                 </ul>
+             
             </div>
+            <h6 class="text-center" >Seja bem-vindo <p class="text-success"><?php echo $_SESSION['nome']; ?></p></h6>
         </div>
         <div class="row">
             <div class="col-md-8 mt-3 mx-auto">
+                
+            <?php
+            if (isset($_SESSION['msg']) and $_SESSION['msg'] != "" and isset($_SESSION['status']) and $_SESSION['status'] != "") {
+            ?>
+                <div class="alert col-6 mx-auto <?php echo $_SESSION['status']  ?> alert-dismissible fade show" role="alert">
+                    <strong><?php echo $_SESSION['msg'] ?></strong>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            <?php  }
+            unset($_SESSION['msg']);
+            unset($_SESSION['status']);
+            ?>
                 <div class="card bg-transparent shadow">
                     <div class="card-header bg-transparent">
                         <h5 class=" card-title text-center">Tabela de contatos</h5>
@@ -56,6 +71,7 @@ $resultado = mysqli_query($conexao, $sql);
                                 <th>Nome</th>
                                 <th>Email</th>
                                 <th>Telefone</th>
+                                <th colspan="2">Ações</th>
                             </thead>
                             <tr>
                                 <?php
@@ -63,12 +79,14 @@ $resultado = mysqli_query($conexao, $sql);
                                     $nome = $dados['nome'];
                                     $email = $dados['email'];
                                     $telefone = $dados['telefone'];
-
+                                    $id = $dados['id'];
                                 ?>
                                     <tbody>
                                         <td> <?php echo $nome  ?></td>
                                         <td><?php echo $email ?></td>
                                         <td><?php echo $telefone   ?></td>
+                                        <td><a href="editar-contato.php?id=<?php echo $id; ?>"><i class="bi bi-pencil-square text-success"></i></a></td>
+                                        <td><a  href="insere.php?del_contato=<?php echo $id; ?>"><i class="bi bi-trash text-danger"></i></a></td>
                                     </tbody>
                                 <?php } ?>
                             </tr>
@@ -81,24 +99,31 @@ $resultado = mysqli_query($conexao, $sql);
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h1 class="modal-title fs-5" id="exampleModalLabel">New message</h1>
+                        <h1 class="modal-title fs-5" id="exampleModalLabel">Cadastrar contato</h1>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        <form>
+                        <form method="post" action="insere.php">
                             <div class="mb-3">
-                                <label for="recipient-name" class="col-form-label">Recipient:</label>
-                                <input type="text" class="form-control" id="recipient-name">
+                                <input type="hidden" name="id">
+                                <label for="recipient-name" class="col-form-label">Nome:</label>
+                                <input type="text" placeholder="insira seu nome" name="nome" class="form-control" id="recipient-name">
                             </div>
                             <div class="mb-3">
-                                <label for="message-text" class="col-form-label">Message:</label>
-                                <textarea class="form-control" id="message-text"></textarea>
+                                <label for="recipient-name" class="col-form-label">Email:</label>
+                                <input type="text" placeholder="examplo@gmail.com" name="email" class="form-control" id="recipient-name">
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="recipient-name" class="col-form-label">Telefone:</label>
+                                <input type="text" placeholder="(xx) xxxx-xxxx" name="telefone" class=" telefone form-control" id="recipient-name">
+                            </div>
+
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Fechar</button>
+                                <button type="submit" name="cadastrar-contato" class="btn btn-success">Cadastrar</button>
                             </div>
                         </form>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-primary">Send message</button>
                     </div>
                 </div>
             </div>
@@ -106,6 +131,13 @@ $resultado = mysqli_query($conexao, $sql);
     </div>
 
 </body>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js" integrity="sha512-pHVGpX7F/27yZ0ISY+VVjyULApbDlD0/X0rgGbTqCE7WFW5MezNTWG/dnhtbBuICzsd0WQPgpE4REBLv+UqChw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+
+<script>
+    $('.telefone').mask('(00) 0000-0000');
+</script>
 
 </html>

@@ -1,7 +1,5 @@
 <?php
-
 include 'config.php';
-
 session_start();
 // cadastro de contatos
 if (isset($_POST['cadastrar-contato'])) {
@@ -9,7 +7,6 @@ if (isset($_POST['cadastrar-contato'])) {
     $nome = mysqli_escape_string($conexao, $_POST['nome']);
     $telefone = mysqli_escape_string($conexao, $_POST['telefone']);
     $email = mysqli_escape_string($conexao, $_POST['email']);
-
 
     if ($id == "") {
         $sql = "INSERT INTO contato(nome,telefone,email) VALUES ('$nome','$telefone','$email')";
@@ -21,11 +18,11 @@ if (isset($_POST['cadastrar-contato'])) {
     if ($execute == TRUE) {
         $_SESSION['msg'] = "Contato cadastrado!";
         $_SESSION['status'] = "alert-success";
-        header('location:index.php');
+        header('location:painel.php');
     } else {
         $_SESSION['msg'] = "Erro ao cadastrar!";
         $_SESSION['status'] = "alert-danger";
-        header('location:index.php');
+        header('location:painel.php');
     }
 }
 
@@ -53,4 +50,34 @@ if (isset($_POST['cadastrar-usuario'])) {
         die;
     } 
     }
+if (isset($_GET['del_contato'])) {
+    $id = mysqli_escape_string($conexao,$_GET['del_contato']);
+    $sql = mysqli_query($conexao,"DELETE FROM contato WHERE id = '$id'");
+    if ($sql == TRUE) {
+        $_SESSION['msg'] = "Contato excluido";
+        $_SESSION['status'] = "alert-success";
+        header('location:painel.php');
+        die;
+    }else{
+        $_SESSION['msg'] = "Erro ao deletar contato";
+        $_SESSION['status'] = "alert-danger";
+        header('location:painel.php');
+        die;
+    }
+}
+if (isset($_GET['del_usuario'])) {
+    $id = mysqli_escape_string($conexao,$_GET['del_usuario']);
+    $sql = mysqli_query($conexao,"DELETE FROM usuario WHERE id = '$id'");
+    if ($sql == TRUE) {
+        $_SESSION['msg'] = "Perfil excluido";
+        $_SESSION['status'] = "alert-success";
+        header('location:index.php');
+        die;
+    }else{
+        $_SESSION['msg'] = "Erro ao deletar perfil";
+        $_SESSION['status'] = "alert-danger";
+        header('location:index.php');
+        die;
+    }
+}
 

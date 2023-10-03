@@ -29,11 +29,11 @@ if (isset($_POST['cadastrar-contato'])) {
 if (isset($_POST['cadastrar-usuario'])) {
     $id = mysqli_escape_string($conexao,$_POST['id']);
     $nome = mysqli_escape_string($conexao, $_POST['nome']);
-    $senha = mysqli_escape_string($conexao,$_POST['$senha']);
+    $senha = mysqli_escape_string($conexao,$_POST['senha']);
     $senha = password_hash($senha,PASSWORD_DEFAULT);
 
     if ($id == "") {
-        $sql = "INSERT INTO usuario(nome,senha) VALUES ('$nome','$senha')";
+        $sql = "INSERT INTO usuario(nome,senha) VALUES ('$nome', '$senha')";
     } else {
         $sql = "UPDATE usuario SET nome = '$nome', senha = '$senha'  WHERE id = '$id'";
     }
